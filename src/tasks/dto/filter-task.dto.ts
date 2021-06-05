@@ -5,9 +5,9 @@ import { ETaskStatus } from '../interface/tasks.interface';
 export class FilterTaskDto {
   @IsOptional()
   @IsString()
-  search: string;
+  search?: string;
 
   @IsOptional()
   @IsEnum(ETaskStatus, { message: `The status must be one of "${Object.keys(TASK_STATUS).join(', ')}"` })
-  status: ETaskStatus;
+  status?: ETaskStatus;
 }
