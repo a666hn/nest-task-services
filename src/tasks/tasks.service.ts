@@ -29,6 +29,10 @@ export class TasksService {
       );
     }
 
+    if (!tasks.length) {
+      throw new NotFoundException(`Can't found the task!`)
+    }
+
     return tasks;
   }
 
