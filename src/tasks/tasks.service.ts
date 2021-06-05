@@ -59,23 +59,13 @@ export class TasksService {
 
   updateTask(id: string, status: ETaskStatus): ITaskData {
     const task = this.getTaskById(id);
-
-    if (!task) {
-      throw new NotFoundException(`Task with ID "${id}" is not exist`)
-    }
-
     task.status = status;
 
     return task;
   }
 
   deleteTask(id: string): void {
-    const task = this.getTaskById(id);
-
-    if (!task) {
-      throw new NotFoundException(`Task with ID "${id}" is not exist`)
-    }
-    
+    this.getTaskById(id);
     this.tasks = this.tasks.filter((t) => t.id !== id);
   }
 }
