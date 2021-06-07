@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotnev from 'dotenv';
 import { DBConnectionClass } from './globals/configs/database.config';
-import { TasksModule } from './tasks/tasks.module';
+import { TASKS_APP } from './module.list';
 
 dotnev.config()
 
@@ -19,8 +19,10 @@ if (NODE_ENV !== "") {
   imports: [
     // will make the .env properties available throughout the application.
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot(connection),
-    TasksModule,
+    // TypeOrmModule.forRoot(connection),
+
+    // Import all tasks app module
+    ...TASKS_APP,
   ],
   controllers: [],
   providers: [],
