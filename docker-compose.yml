@@ -7,7 +7,7 @@ networks:
 
 services:
   # Postgres database
-  nest-task-management-database:
+  postgres:
     image: postgres:12.2
     restart: always
     environment:
@@ -20,7 +20,7 @@ services:
       - nt-666
     
   # Redis Services
-  nest-task-management-redis:
+  redis:
     image: redis:alpine
     ports:
       - "6379:6379"
