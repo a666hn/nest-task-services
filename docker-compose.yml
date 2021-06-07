@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=${POSTGRE_USER}
       - POSTGRES_PASSWORD=${POSTGRE_PASS}
     ports:
-      - "5432:5432"
+      - '${POSTGRE_PORT}:5432'
     networks:
       - nt-666
     
