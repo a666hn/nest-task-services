@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotnev from 'dotenv';
+import { DBConnectionClass } from './globals/configs/database.config';
+import { TasksModule } from './tasks/tasks.module';
 
+dotnev.config()
+
+let connection: any;
+
+const { NODE_ENV } = process.env
+const configDB = new DBConnectionClass();
+
+if (NODE_ENV !== "") {
+  connection = configDB[NODE_ENV]
+}
 @Module({
   imports: [
     // will make the .env properties available throughout the application.
     ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(connection),
     TasksModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'spectra-admin-dev',
-      password: 'spectra-admin-33557799',
-      database: 'spectra-dev',
-      autoLoadEntities: true,
-      synchronize: true,
-    })
   ],
   controllers: [],
   providers: [],
