@@ -14,4 +14,14 @@ export class UsersService {
   async signUp(uDto: UsersDto, status: boolean): Promise<UsersEntity> {
     return this.uRepository.createNewUser(uDto, status);
   }
+
+  async getUserProfile(id: string): Promise<UsersEntity> {
+    return this.uRepository.getUserProfile(id, false);
+  }
+
+  async updateStatusUser(id: string, status: boolean): Promise<string> {
+    const user = await this.uRepository.getUserProfile(id, true);
+
+    return this.uRepository.updateStatusUser(user, status);
+  }
 }

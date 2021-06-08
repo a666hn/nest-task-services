@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Column, Entity } from "typeorm";
 import { BaseEntity } from "./base.entity";
 
@@ -21,9 +22,15 @@ export class UsersEntity extends BaseEntity {
   @Column({ nullable: true })
   dateOfBirth: string;
 
+  @Exclude()
   @Column()
   password: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  constructor(partial: Partial<UsersEntity>) {
+    super();
+    Object.assign(this, partial);
+  }
 }
