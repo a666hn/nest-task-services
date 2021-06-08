@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
+import { ETaskStatus } from 'src/globals/enum/enum';
 
 export class CreateTaskDto {
   @IsNotEmpty()
@@ -10,7 +11,7 @@ export class CreateTaskDto {
 
 export class FilterTaskDto {
   @IsOptional()
-  status: string;
+  status: ETaskStatus;
 
   @IsOptional()
   keyword: string;

@@ -33,18 +33,18 @@ export class TasksRepository extends Repository<TasksEntity> {
     
     const query = this.createQueryBuilder('task');
 
-    if (status !== '') {
+    if (status) {
       query.andWhere('task.status = :status', { status });
     }
 
-    if (keyword !== '') {
+    if (keyword) {
       query.andWhere(
         'LOWER(task.title) ILIKE :keyword OR LOWER(task.description) ILIKE :keyword',
         { keyword: `%${keyword}%` }
       );
     }
 
-    const tasks = query.getMany();
+    const tasks = await query.getMany();
 
     return tasks;
   }
