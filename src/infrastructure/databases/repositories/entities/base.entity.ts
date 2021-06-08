@@ -1,14 +1,14 @@
-import { AfterInsert, AfterUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   
-  @Column({ nullable: true })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ nullable: true })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Column({ nullable: true })
@@ -16,14 +16,4 @@ export class BaseEntity {
 
   @Column({ nullable: true })
   updatedBy: string;
-
-  @AfterInsert()
-  timeInserted() {
-    this.createdAt = new Date();
-  }
-
-  @AfterUpdate()
-  timeUpdated() {
-    this.updatedAt = new Date();
-  }
 }
