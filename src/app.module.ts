@@ -19,7 +19,7 @@ if (NODE_ENV !== "") {
   imports: [
     // will make the .env properties available throughout the application.
     ConfigModule.forRoot({ isGlobal: true }),
-    // TypeOrmModule.forRoot(connection),
+    TypeOrmModule.forRoot(connection),
 
     // Import all tasks app module
     ...TASKS_APP,

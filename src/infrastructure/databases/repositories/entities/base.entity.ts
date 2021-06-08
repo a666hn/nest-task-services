@@ -11,10 +11,10 @@ export class BaseEntity {
   @Column({ nullable: true })
   updatedAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   createdBy: string;
 
-  @Column()
+  @Column({ nullable: true })
   updatedBy: string;
 
   @AfterInsert()
