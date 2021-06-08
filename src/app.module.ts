@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotnev from 'dotenv';
 import { DBConnectionClass } from './globals/configs/database.config';
-import { TASKS_APP } from './module.list';
+import { TASKS_APP, USERS_APP } from './module.list';
 
 dotnev.config()
 
@@ -23,6 +23,9 @@ if (NODE_ENV !== "") {
 
     // Import all tasks app module
     ...TASKS_APP,
+
+    // Import all users app module
+    ...USERS_APP,
   ],
   controllers: [],
   providers: [],
