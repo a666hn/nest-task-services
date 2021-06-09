@@ -1,7 +1,9 @@
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { SignInDto } from "src/infrastructure/rest/users/auth/dto/auth.dto";
+import { IUserPayload } from "src/infrastructure/rest/users/auth/interfaces/user-payload.interface";
 import { FilterGetUserDto, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
 import { HandleTypeOrmError } from "src/utils/error.util";
-import { SetPassword } from "src/utils/utils";
+import { ComparePassword, SetPassword } from "src/utils/utils";
 import { EntityRepository, Repository } from "typeorm";
 import { UsersEntity } from "./entities/users.entity";
 
@@ -83,5 +85,23 @@ export class UsersRepository extends Repository<UsersEntity> {
     } catch (error) {
       HandleTypeOrmError(error.code, error.message);
     }
+  }
+
+  async checkUserAndSignIn(uDto: SignInDto): Promise<UsersEntity> {
+    const { username, password } = uDto
+
+    const user = await this.findOne({ where: { username } });
+
+    if (!user) {
+      throw new NotFoundException(`User not exist in our database!`);
+    }
+
+    if (await ComparePassword(password, user.password)) {
+      delete user.password;
+
+      return user;
+    }
+
+    throw new UnauthorizedException('Incorrect password. Please check your password!');
   }
 }
