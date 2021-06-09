@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 export interface Response<T> {
   httpCode: number;
+  executeOn: Date;
   data: T;
 }
 
@@ -12,7 +13,9 @@ export class ResponseInterceptors<T> implements NestInterceptor<T, Response<T>> 
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
     return next.handle().pipe(map((data) => {
       const httpCode = context.getArgByIndex(1)?.statusCode
-      return { httpCode, data }
+      const executeOn = new Date()
+
+      return { httpCode, executeOn, data }
     }));
   }
 }
