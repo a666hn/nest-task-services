@@ -1,5 +1,5 @@
 import { NotFoundException } from "@nestjs/common";
-import { UsersDto } from "src/infrastructure/rest/users/dto/users.dto";
+import { FilterGetUser, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
 import { getTypeormError, setPassword } from "src/utils/utils";
 import { EntityRepository, Repository } from "typeorm";
 import { UsersEntity } from "./entities/users.entity";
@@ -42,5 +42,43 @@ export class UsersRepository extends Repository<UsersEntity> {
     await this.save(user)
 
     return user.id;
+  }
+
+  async getUsers(f: FilterGetUser): Promise<UsersEntity[]> {
+    const { name, username, email, status } = f
+
+    const query = this.createQueryBuilder('user');
+
+    if (name) {
+      query.andWhere(
+        `user.firstName || ' ' || user.lastName ILIKE :name`,
+        { user: `%${name}%` }
+      );
+    }
+
+    if (username) {
+      query.andWhere(
+        `user.username ILIKE :username`,
+        { username: `%${username}%` }
+      );
+    }
+
+    if (email) {
+      query.andWhere(
+        `user.email ILIKE :email`,
+        { email: `%${email}%` }
+      );
+    }
+
+    if (status) {
+      query.andWhere(
+        `user.status = :email`,
+        { email }
+      );
+    }
+
+    const users = await query.getMany();
+
+    return users;
   }
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class UsersDto {
   @IsNotEmpty()
@@ -27,5 +27,23 @@ export class UsersDto {
   @IsString()
   password: string;
 
+  status: boolean;
+}
+
+export class FilterGetUser {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  @IsBoolean()
   status: boolean;
 }

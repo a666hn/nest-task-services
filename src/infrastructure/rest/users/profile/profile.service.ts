@@ -2,26 +2,26 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UsersEntity } from "src/infrastructure/databases/repositories/entities/users.entity";
 import { UsersRepository } from "src/infrastructure/databases/repositories/users.repository";
-import { UsersDto } from "./dto/users.dto";
+import { FilterGetUser } from "../scoped-user.dto";
 
 @Injectable()
-export class UsersService {
+export class ProfileService {
   constructor(
     @InjectRepository(UsersRepository)
-    private uRepository: UsersRepository
+    private uRepo: UsersRepository
   ) {}
 
-  async signUp(uDto: UsersDto, status: boolean): Promise<UsersEntity> {
-    return this.uRepository.createNewUser(uDto, status);
-  }
-
   async getUserProfile(id: string): Promise<UsersEntity> {
-    return this.uRepository.getUserProfile(id, false);
+    return this.uRepo.getUserProfile(id, false);
   }
 
   async updateStatusUser(id: string, status: boolean): Promise<string> {
-    const user = await this.uRepository.getUserProfile(id, true);
+    const user = await this.uRepo.getUserProfile(id, true);
 
-    return this.uRepository.updateStatusUser(user, status);
+    return this.uRepo.updateStatusUser(user, status);
+  }
+
+  async getUsers(f: FilterGetUser): Promise<UsersEntity[]> {
+    return this.uRepo.getUsers(f);
   }
 }

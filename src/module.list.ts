@@ -1,5 +1,6 @@
 import { TasksModule } from "./infrastructure/rest/tasks/tasks.module";
-import { UsersModule } from "./infrastructure/rest/users/users.module";
+import { AuthModule } from "./infrastructure/rest/users/auth/auth.module";
+import { ProfileModule } from "./infrastructure/rest/users/profile/profile.module";
 
 // TASKS APP MODULE
 export const TASKS_APP = [
@@ -8,5 +9,6 @@ export const TASKS_APP = [
 
 // USERS APP MODULE
 export const USERS_APP = [
-  UsersModule
+  AuthModule,
+  ProfileModule
 ]
