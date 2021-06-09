@@ -1,6 +1,5 @@
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { SignInDto } from "src/infrastructure/rest/users/auth/dto/auth.dto";
-import { IUserPayload } from "src/infrastructure/rest/users/auth/interfaces/user-payload.interface";
 import { FilterGetUserDto, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
 import { HandleTypeOrmError } from "src/utils/error.util";
 import { ComparePassword, SetPassword } from "src/utils/utils";
