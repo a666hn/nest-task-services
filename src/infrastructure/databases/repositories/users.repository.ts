@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { FilterGetUserDto, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
 import { HandleTypeOrmError } from "src/utils/error.util";
-import { setPassword } from "src/utils/utils";
+import { SetPassword } from "src/utils/utils";
 import { EntityRepository, Repository } from "typeorm";
 import { UsersEntity } from "./entities/users.entity";
 
@@ -11,7 +11,7 @@ export class UsersRepository extends Repository<UsersEntity> {
     const { firstName, lastName, nickname, email, username, dateOfBirth, password } = uDto
 
     try {
-      const pass = await setPassword(password);
+      const pass = await SetPassword(password);
 
       const user = this.create({ firstName, lastName, nickname, email, username, dateOfBirth, password: pass, isActive: status });
 
