@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
 import * as b from 'bcrypt';
-import { SALT_ROUNDS } from 'src/globals/configs/hash.config';
 
 export const setPassword = async (password: string): Promise<string> => {
   if (!password) {
@@ -8,8 +7,9 @@ export const setPassword = async (password: string): Promise<string> => {
   }
   
   let hash: string = "";
+  const SALT = await b.genSalt();
 
-  hash = await b.hash(password, SALT_ROUNDS);
+  hash = await b.hash(password, SALT);
 
   return hash;
 };
