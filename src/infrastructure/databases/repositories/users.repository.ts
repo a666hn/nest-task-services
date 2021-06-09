@@ -1,6 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
-import { FilterGetUser, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
-import { getTypeormError, setPassword } from "src/utils/utils";
+import { FilterGetUserDto, UsersDto } from "src/infrastructure/rest/users/scoped-user.dto";
+import { HandleTypeOrmError } from "src/utils/error.util";
+import { setPassword } from "src/utils/utils";
 import { EntityRepository, Repository } from "typeorm";
 import { UsersEntity } from "./entities/users.entity";
 
@@ -18,7 +19,7 @@ export class UsersRepository extends Repository<UsersEntity> {
 
       return user;
     } catch(error) {
-      getTypeormError(error.code, error.message);
+      HandleTypeOrmError(error.code, error.message);
     }
   }
 
@@ -37,14 +38,12 @@ export class UsersRepository extends Repository<UsersEntity> {
   async updateStatusUser(user: UsersEntity, status: boolean): Promise<string> {
     user.isActive = status;
 
-    console.log("User Entity:", status);
-
     await this.save(user)
 
     return user.id;
   }
 
-  async getUsers(f: FilterGetUser): Promise<UsersEntity[]> {
+  async getUsers(f: FilterGetUserDto): Promise<UsersEntity[]> {
     const { name, username, email, status } = f
 
     const query = this.createQueryBuilder('user');
@@ -52,7 +51,7 @@ export class UsersRepository extends Repository<UsersEntity> {
     if (name) {
       query.andWhere(
         `user.firstName || ' ' || user.lastName ILIKE :name`,
-        { user: `%${name}%` }
+        { name: `%${name}%` }
       );
     }
 
@@ -72,13 +71,17 @@ export class UsersRepository extends Repository<UsersEntity> {
 
     if (status) {
       query.andWhere(
-        `user.status = :email`,
-        { email }
+        `user.status = :status`,
+        { status }
       );
     }
 
-    const users = await query.getMany();
+    try {
+      const users = await query.getMany();
 
-    return users;
+      return users;
+    } catch (error) {
+      HandleTypeOrmError(error.code, error.message);
+    }
   }
 }

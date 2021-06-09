@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UsersEntity } from "src/infrastructure/databases/repositories/entities/users.entity";
 import { UsersRepository } from "src/infrastructure/databases/repositories/users.repository";
-import { FilterGetUser } from "../scoped-user.dto";
+import { FilterGetUserDto } from "../scoped-user.dto";
 
 @Injectable()
 export class ProfileService {
@@ -21,7 +21,7 @@ export class ProfileService {
     return this.uRepo.updateStatusUser(user, status);
   }
 
-  async getUsers(f: FilterGetUser): Promise<UsersEntity[]> {
+  async getUsers(f: FilterGetUserDto): Promise<UsersEntity[]> {
     return this.uRepo.getUsers(f);
   }
 }

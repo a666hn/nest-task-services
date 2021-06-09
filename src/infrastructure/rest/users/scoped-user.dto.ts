@@ -30,7 +30,7 @@ export class UsersDto {
   status: boolean;
 }
 
-export class FilterGetUser {
+export class FilterGetUserDto {
   @IsOptional()
   @IsString()
   name: string;
