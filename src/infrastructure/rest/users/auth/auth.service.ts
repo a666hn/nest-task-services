@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UsersEntity } from "src/infrastructure/databases/repositories/entities/users.entity";
 import { UsersRepository } from "src/infrastructure/databases/repositories/users.repository";
@@ -18,7 +18,11 @@ export class AuthService {
   }
 
   async signIn(uDto: SignInDto): Promise<IUserPayload<UsersEntity>> {
-    const userData = await this.uRepo.checkUserAndSignIn(uDto);
+    const [userData, isAuthenticated] = await this.uRepo.checkUserAndSignIn(uDto);
+
+    if (!isAuthenticated) {
+      throw new UnauthorizedException('Incorrect password!')
+    }
 
     const user: IUserPayload<UsersEntity> = {
       user: userData,

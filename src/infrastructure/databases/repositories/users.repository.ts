@@ -86,7 +86,7 @@ export class UsersRepository extends Repository<UsersEntity> {
     }
   }
 
-  async checkUserAndSignIn(uDto: SignInDto): Promise<UsersEntity> {
+  async checkUserAndSignIn(uDto: SignInDto): Promise<[UsersEntity, boolean]> {
     const { username, password } = uDto
 
     const user = await this.findOne({ where: { username } });
@@ -95,12 +95,8 @@ export class UsersRepository extends Repository<UsersEntity> {
       throw new NotFoundException(`User not exist in our database!`);
     }
 
-    if (await ComparePassword(password, user.password)) {
-      delete user.password;
+    const isMatch = await ComparePassword(password, user.password);
 
-      return user;
-    }
-
-    throw new UnauthorizedException('Incorrect password. Please check your password!');
+    return [user, isMatch];
   }
 }
